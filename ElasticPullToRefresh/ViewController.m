@@ -48,7 +48,7 @@
 
 - (void) initStuffs {
     
-    minimalHeight = 50.0f;
+    minimalHeight = 80.0f;
     maxWaveHeight = 100.0f;
     
     shapeLayer = [[CAShapeLayer alloc] init];
@@ -69,6 +69,7 @@
     [super loadView];
     
     [shapeLayer setFrame:CGRectMake(0, 0, self.view.bounds.size.width, minimalHeight)];
+    
     [shapeLayer setFillColor:[UIColor colorWithRed:57/255.0f green:67/255.0f blue:89/255.0f alpha:1.0f].CGColor];
     [shapeLayer setActions:@{@"position": [NSNull null], @"bounds": [NSNull null], @"path": [NSNull null]}];
     [self.view.layer addSublayer:shapeLayer];
@@ -96,7 +97,7 @@
     [self.view addSubview:_l2ControlPointView];
     [self.view addSubview:_l1ControlPointView];
     [self.view addSubview:_cControlPointView];
-    [self.view addSubview:_r3ControlPointView];
+    [self.view addSubview:_r1ControlPointView];
     [self.view addSubview:_r2ControlPointView];
     [self.view addSubview:_r3ControlPointView];
     
@@ -120,7 +121,7 @@
                               delay:0.0
              usingSpringWithDamping:0.57
               initialSpringVelocity:0.0
-                            options:UIViewAnimationOptionTransitionNone
+                            options:0
                          animations:^{
                              CGPoint centerPointL3 = self.l3ControlPointView.center;
                              centerPointL3.y = centerY;
@@ -160,8 +161,8 @@
         CGFloat waveHeight = MIN(additionalHeight*0.6, maxWaveHeight);
         CGFloat baseHeight = minimalHeight + additionalHeight - waveHeight;
         CGFloat locationX = [gesture locationInView:gesture.view].x;
+
         [self layoutControlPoints:baseHeight waveHeight:waveHeight locationX:locationX];
-        
         [self updateShapelayer];
     }
 }
@@ -177,6 +178,7 @@
     UIBezierPath *bezierPath = [[UIBezierPath alloc] init];
     
     [bezierPath moveToPoint:CGPointMake(0.0, 0.0)];
+    
     [bezierPath addLineToPoint:CGPointMake(0.0, [_l3ControlPointView dg_center:animating].y)];
     
     [bezierPath addCurveToPoint:[_l1ControlPointView dg_center:animating]
@@ -192,6 +194,7 @@
                   controlPoint2:[_r2ControlPointView dg_center:animating]];
     
     [bezierPath addLineToPoint:CGPointMake(width, 0.0)];
+    
     [bezierPath closePath];
     
     return bezierPath.CGPath;
@@ -213,9 +216,11 @@
     _l3ControlPointView.center = CGPointMake(minLeftX, baseHeight);
     _l2ControlPointView.center = CGPointMake(minLeftX + leftPartWidth * 0.44, baseHeight);
     _l1ControlPointView.center = CGPointMake(minLeftX + leftPartWidth * 0.71, baseHeight + waveHeight * 0.64);
+    
     _cControlPointView.center = CGPointMake(locationX, baseHeight + waveHeight * 1.36);
+    
     _r1ControlPointView.center = CGPointMake(maxRightX - rightPartWidth * 0.71, baseHeight + waveHeight * 0.64);
-    _r2ControlPointView.center = CGPointMake(maxRightX - (rightPartWidth * 0.44), baseHeight);
+    _r2ControlPointView.center = CGPointMake(maxRightX - rightPartWidth * 0.44, baseHeight);
     _r3ControlPointView.center = CGPointMake(maxRightX, baseHeight);
 }
 
