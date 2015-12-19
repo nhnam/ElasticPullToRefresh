@@ -1,2 +1,2 @@
 # ElasticPullToRefresh
-![](http://g.recordit.co/obHY0EWKG3.gif)
+![](http://g.recordit.co/r6taidoNXH.gif)
